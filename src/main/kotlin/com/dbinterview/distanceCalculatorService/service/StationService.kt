@@ -3,8 +3,9 @@ package com.dbinterview.distanceCalculatorService.service
 import com.dbinterview.distanceCalculatorService.model.Station
 import com.dbinterview.distanceCalculatorService.service.exception.StationNotFoundException
 
+
 interface StationService {
 
     @Throws(StationNotFoundException::class)
-    fun getStation(ds100: String): Station
+    fun getStationsByDS100(ds100List: List<String>): Map<String, Station>
 }

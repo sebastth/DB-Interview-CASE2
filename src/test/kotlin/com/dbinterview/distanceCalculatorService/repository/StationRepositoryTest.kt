@@ -24,7 +24,6 @@ class StationRepositoryTest{
 
     //Test stations
     private var station1: Station = Station("AAAAA", "Test1", "1", "Test1", "FV", 1.1, 1.1, "TestOperator1", "123", "TestStatus1")
-    private val station2: Station = Station("BBBBB", "Test2", "2", "Test2", "FV", 2.2, 2.2, "TestOperator2", "234", "TestStatus2")
 
     companion object {
         @Container
@@ -44,23 +43,28 @@ class StationRepositoryTest{
     }
 
     @Test
-    fun `should find an Station by ds100`() {
+    fun `should find all Stations by ds100`() {
         val stationDS100 = createStation(station1)
 
-        val result = stationRepository.findById(stationDS100)
+        val result = stationRepository.findAllById(listOf(stationDS100)).associateBy { it.ds100 }
 
-        assertTrue(result.isPresent)
-        val resultStation = result.get()
-        assertEquals(station1.ds100, resultStation.ds100)
-        assertEquals(station1.evaNr, resultStation.evaNr)
-        assertEquals(station1.ifopt, resultStation.ifopt)
-        assertEquals(station1.name, resultStation.name)
-        assertEquals(station1.traffic, resultStation.traffic)
-        assertEquals(station1.longitude, resultStation.longitude)
-        assertEquals(station1.latitude, resultStation.latitude)
-        assertEquals(station1.operatorName, resultStation.operatorName)
-        assertEquals(station1.operatorNr, resultStation.operatorNr)
-        assertEquals(station1.status, resultStation.status)
+        val resultStation: Station? = result[station1.ds100]
+
+        if(resultStation == null){
+            fail("Station not retrieved by DS100")
+        }
+        else {
+            assertEquals(station1.ds100, resultStation.ds100)
+            assertEquals(station1.evaNr, resultStation.evaNr)
+            assertEquals(station1.ifopt, resultStation.ifopt)
+            assertEquals(station1.name, resultStation.name)
+            assertEquals(station1.traffic, resultStation.traffic)
+            assertEquals(station1.longitude, resultStation.longitude)
+            assertEquals(station1.latitude, resultStation.latitude)
+            assertEquals(station1.operatorName, resultStation.operatorName)
+            assertEquals(station1.operatorNr, resultStation.operatorNr)
+            assertEquals(station1.status, resultStation.status)
+        }
     }
 
 
